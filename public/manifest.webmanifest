@@ -1,0 +1,16 @@
+{
+  "name": "Dosis — Cachapas, Burgers & Parrilla",
+  "short_name": "Dosis",
+  "description": "Cachapas, burgers y parrilla al momento. Pide en línea y paga con pago móvil.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#123825",
+  "theme_color": "#123825",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
