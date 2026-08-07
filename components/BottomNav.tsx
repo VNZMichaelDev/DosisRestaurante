@@ -129,12 +129,16 @@ export default function BottomNav() {
             className={`nav-btn ${active ? "active" : ""} ${
               item.center ? "center" : ""
             }`}
-            onClick={(e) => {
+onClick={(e) => {
               if (item.href === "/#menu") {
                 e.preventDefault();
-                document
-                  .getElementById("menu")
-                  ?.scrollIntoView({ behavior: "smooth" });
+                if (pathname === "/") {
+                  document
+                    .getElementById("menu")
+                    ?.scrollIntoView({ behavior: "smooth" });
+                } else {
+                  window.location.href = "/#menu";
+                }
               }
             }}
           >
