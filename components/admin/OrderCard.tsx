@@ -6,7 +6,11 @@ import { ORDER_STATUSES, statusLabel } from "@/lib/status";
 
 interface OrderCardProps {
   order: Order & {
-    profiles?: { email?: string | null; full_name?: string | null } | null;
+    profiles?: {
+      email?: string | null;
+      full_name?: string | null;
+      cedula?: string | null;
+    } | null;
   };
   updating: boolean;
   onChangeStatus: (id: string, status: OrderStatus) => void;
@@ -33,7 +37,12 @@ export default function OrderCard({
       </div>
 
       <div className="oc-body">
-        <div className="oc-client">👤 {clientName}</div>
+        <div className="oc-client">
+          👤 {clientName}
+          {order.profiles?.cedula && (
+            <span className="oc-cedula">🪪 {order.profiles.cedula}</span>
+          )}
+        </div>
 
         <div className="oc-items">
           {order.items.map((item, i) => (
@@ -77,6 +86,16 @@ export default function OrderCard({
                 <p className="ref">📍 {order.delivery_reference}</p>
               )}
             </>
+          )}
+          {order.lat != null && order.lng != null && (
+            <a
+              className="oc-map"
+              href={`https://www.google.com/maps?q=${order.lat},${order.lng}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              🗺️ Ver ubicación del cliente en Google Maps
+            </a>
           )}
         </div>
       </div>

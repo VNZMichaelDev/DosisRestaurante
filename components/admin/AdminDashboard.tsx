@@ -65,7 +65,7 @@ export default function AdminDashboard() {
               .from("orders")
               .select("*")
               .order("created_at", { ascending: false }),
-            supabase.from("profiles").select("id, email, full_name"),
+            supabase.from("profiles").select("id, email, full_name, cedula"),
           ]);
 
         if (cancelled) return;
@@ -106,7 +106,7 @@ export default function AdminDashboard() {
                   .maybeSingle(),
                 supabase
                   .from("profiles")
-                  .select("id, email, full_name")
+                  .select("id, email, full_name, cedula")
                   .eq("id", newOrder.user_id)
                   .maybeSingle(),
               ]);

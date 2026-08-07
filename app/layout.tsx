@@ -4,6 +4,7 @@ import "./globals.css";
 import { CartProvider } from "@/store/cart";
 import { ToastProvider } from "@/store/toast";
 import { NotificationsProvider } from "@/store/notifications";
+import WelcomeModal from "@/components/WelcomeModal";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -50,6 +51,7 @@ export default function RootLayout({
             <NotificationsProvider>{children}</NotificationsProvider>
           </CartProvider>
         </ToastProvider>
+        <WelcomeModal />
       </body>
     </html>
   );

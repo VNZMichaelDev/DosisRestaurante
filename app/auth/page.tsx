@@ -15,6 +15,11 @@ export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [cedula, setCedula] = useState("");
+  const [locLat, setLocLat] = useState<number | null>(null);
+  const [locLng, setLocLng] = useState<number | null>(null);
+  const [locating, setLocating] = useState(false);
+  const [locError, setLocError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -144,7 +149,12 @@ export default function AuthPage() {
           email,
           password,
           options: {
-            data: { full_name: name },
+            data: {
+              full_name: name,
+              cedula: cedula.trim(),
+              lat: locLat ?? "",
+              lng: locLng ?? "",
+            },
             emailRedirectTo: `${window.location.origin}/auth${
               next === "/" ? "" : `?next=${encodeURIComponent(next)}`
             }`,
@@ -190,6 +200,30 @@ export default function AuthPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const locate = () => {
+    if (!("geolocation" in navigator)) {
+      setLocError("Tu navegador no soporta compartir ubicación.");
+      return;
+    }
+    setLocating(true);
+    setLocError(null);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLocLat(pos.coords.latitude);
+        setLocLng(pos.coords.longitude);
+        setLocating(false);
+        setLocError(null);
+      },
+      () => {
+        setLocating(false);
+        setLocError(
+          "No pudimos obtener tu ubicación. Permite el acceso al GPS e intenta de nuevo."
+        );
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 }
+    );
   };
 
   const resendEmail = async () => {
@@ -360,18 +394,59 @@ export default function AuthPage() {
 
           <form onSubmit={handleSubmit}>
             {mode === "signup" && (
-              <div className="field">
-                <label htmlFor="name">Tu nombre</label>
-                <input
-                  id="name"
-                  className="input"
-                  type="text"
-                  placeholder="Ej: María Pérez"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </div>
+              <>
+                <div className="field">
+                  <label htmlFor="name">Nombre completo</label>
+                  <input
+                    id="name"
+                    className="input"
+                    type="text"
+                    placeholder="Ej: María Pérez"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="cedula">Cédula</label>
+                  <input
+                    id="cedula"
+                    className="input"
+                    type="text"
+                    placeholder="Ej: V-12345678"
+                    value={cedula}
+                    onChange={(e) => setCedula(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="field">
+                  <button
+                    type="button"
+                    className={`loc-btn ${locLat != null ? "done" : ""}`}
+                    onClick={locate}
+                    disabled={locating}
+                  >
+                    {locating
+                      ? "⏳ Obteniendo ubicación…"
+                      : locLat != null
+                        ? "✓ Ubicación compartida"
+                        : "📍 Compartir mi ubicación"}
+                  </button>
+                  {locLat != null && (
+                    <div className="loc-ok">
+                      ✅ Ubicación capturada
+                      <a
+                        href={`https://www.google.com/maps?q=${locLat},${locLng}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Ver en mapa
+                      </a>
+                    </div>
+                  )}
+                  {locError && <div className="loc-err">{locError}</div>}
+                </div>
+              </>
             )}
             <div className="field">
               <label htmlFor="email">Correo electrónico</label>

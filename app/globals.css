@@ -2181,6 +2181,21 @@ nav.bottom {
 .oc-delivery.retiro {
   background: var(--cream-2);
 }
+.oc-cedula {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--ink);
+  font-weight: 700;
+}
+.oc-map {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--green);
+  text-decoration: underline;
+}
 
 /* ===== Direcciones guardadas (checkout) ===== */
 .saved-addr {
@@ -2298,6 +2313,116 @@ nav.bottom {
 .pm-cell .pm-phone {
   font-size: 15px;
   letter-spacing: 0.3px;
+}
+
+/* ===== Modal de bienvenida ===== */
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(18, 56, 37, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn 0.25s ease;
+}
+.welcome-card {
+  width: 100%;
+  max-width: 360px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 30px 26px 24px;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(18, 56, 37, 0.4);
+  animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.welcome-logo {
+  background: linear-gradient(160deg, #123825, #1d5a3a);
+  border-radius: 18px;
+  padding: 18px 12px;
+  margin-bottom: 18px;
+  color: #fff;
+}
+.welcome-logo span {
+  display: block;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 3px;
+}
+.welcome-logo small {
+  display: block;
+  font-size: 12px;
+  opacity: 0.85;
+  letter-spacing: 1px;
+  margin-top: 3px;
+}
+.welcome-card h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  color: var(--ink);
+}
+.welcome-card p {
+  margin: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ===== Compartir ubicación (GPS) ===== */
+.loc-btn {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px dashed var(--green);
+  border-radius: var(--radius-sm);
+  background: var(--green-soft);
+  color: var(--green);
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+.loc-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.loc-btn.done {
+  border-style: solid;
+  background: var(--green);
+  color: #fff;
+}
+.loc-ok {
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: var(--green);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+.loc-ok a {
+  color: var(--green);
+  text-decoration: underline;
+}
+.loc-err {
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: #c4241e;
+  font-weight: 700;
 }
 
 

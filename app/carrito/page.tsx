@@ -32,6 +32,10 @@ export default function CarritoPage() {
   const [saveLabel, setSaveLabel] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [locLat, setLocLat] = useState<number | null>(null);
+  const [locLng, setLocLng] = useState<number | null>(null);
+  const [locatingLoc, setLocatingLoc] = useState(false);
+  const [locErr, setLocErr] = useState<string | null>(null);
 
   // Recargo de entrega (en Bs) configurado en el panel.
   const [costoEnvio, setCostoEnvio] = useState(0);
@@ -118,6 +122,29 @@ export default function CarritoPage() {
     deliveryType === "delivery" && !gratisAplica ? costoEnvio : 0;
   const grandTotal = Math.round((total + envio) * 100) / 100;
 
+  const shareLocation = () => {
+    if (!("geolocation" in navigator)) {
+      setLocErr("Tu navegador no soporta compartir ubicación.");
+      return;
+    }
+    setLocatingLoc(true);
+    setLocErr(null);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLocLat(pos.coords.latitude);
+        setLocLng(pos.coords.longitude);
+        setLocatingLoc(false);
+      },
+      () => {
+        setLocatingLoc(false);
+        setLocErr(
+          "No pudimos obtener tu ubicación. Permite el acceso al GPS e intenta de nuevo."
+        );
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 }
+    );
+  };
+
   const placeOrder = async () => {
     if (!canPay) return;
     setError(null);
@@ -161,6 +188,8 @@ export default function CarritoPage() {
           deliveryType === "delivery" ? effAddress || null : null,
         delivery_reference:
           deliveryType === "delivery" ? effRef || null : null,
+        lat: locLat ?? null,
+        lng: locLng ?? null,
         status: "pendiente",
       })
       .select("id")
@@ -491,6 +520,33 @@ export default function CarritoPage() {
                   )}
                 </>
               )}
+
+              <div style={{ height: 12 }} />
+              <button
+                type="button"
+                className={`loc-btn ${locLat != null ? "done" : ""}`}
+                onClick={shareLocation}
+                disabled={locatingLoc}
+              >
+                {locatingLoc
+                  ? "⏳ Obteniendo ubicación…"
+                  : locLat != null
+                    ? "✓ Ubicación compartida"
+                    : "📍 Compartir mi ubicación (opcional)"}
+              </button>
+              {locLat != null && (
+                <div className="loc-ok">
+                  ✅ El repartidor verá tu pin exacto
+                  <a
+                    href={`https://www.google.com/maps?q=${locLat},${locLng}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Ver en mapa
+                  </a>
+                </div>
+              )}
+              {locErr && <div className="loc-err">{locErr}</div>}
 
               <div className="field">
                 <label htmlFor="phone">Número de teléfono emisor</label>

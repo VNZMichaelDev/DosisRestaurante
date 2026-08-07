@@ -37,6 +37,9 @@ export interface Profile {
   email?: string | null;
   full_name?: string | null;
   phone?: string | null;
+  cedula?: string | null;
+  lat?: number | null;
+  lng?: number | null;
   is_admin: boolean;
   created_at: string;
 }
@@ -51,6 +54,8 @@ export interface Order {
   delivery_type?: "delivery" | "retiro" | null;
   delivery_address?: string | null;
   delivery_reference?: string | null;
+  lat?: number | null;
+  lng?: number | null;
   status: OrderStatus;
   created_at: string;
   updated_at: string;
