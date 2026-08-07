@@ -104,11 +104,15 @@ export default function CarritoPage() {
   const refValid = /^\d{6}$/.test(reference);
   const addressValid = address.trim().length >= 5;
 
-  // Dirección efectiva: la guardada seleccionada, o la que escribe ahora.
+  // Dirección efectiva: la guardada seleccionada, la que escribe ahora,
+  // o el GPS compartido (reemplaza la dirección escrita).
   const chosen = saved.find((s) => s.id === chosenId) ?? null;
   const effAddress = chosen ? chosen.address : address.trim();
   const effRef = chosen ? (chosen.reference ?? "") : deliveryRef.trim();
-  const effAddressValid = chosen ? true : effAddress.length >= 5;
+  const hasLocation = locLat != null && locLng != null;
+  const effAddressValid = chosen
+    ? true
+    : hasLocation || effAddress.length >= 5;
 
   const canPay =
     phoneValid &&
@@ -456,6 +460,15 @@ export default function CarritoPage() {
 
                   {!chosenId && (
                     <>
+                      {hasLocation && (
+                        <div
+                          className="loc-ok"
+                          style={{ justifyContent: "flex-start", marginBottom: 4 }}
+                        >
+                          ✅ Ya compartiste tu ubicación — la dirección es
+                          opcional.
+                        </div>
+                      )}
                       <div className="field">
                         <label htmlFor="address">Dirección de entrega</label>
                         <textarea
