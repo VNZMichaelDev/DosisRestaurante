@@ -19,16 +19,8 @@ export default function CategoryRow({
         >
           <div className="cat-circle">
             {cat.image ? (
-              <>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={cat.image} alt={cat.label} className="cat-img" />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/circulo para las categorias.png"
-                  alt=""
-                  className="cat-ring"
-                />
-              </>
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={cat.image} alt={cat.label} className="cat-img" />
             ) : (
               cat.emoji
             )}
