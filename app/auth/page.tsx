@@ -145,6 +145,13 @@ export default function AuthPage() {
       const supabase = createClient();
 
       if (mode === "signup") {
+        if (locLat == null || locLng == null) {
+          setError(
+            "Debes compartir tu ubicación para poder crear la cuenta."
+          );
+          setLoading(false);
+          return;
+        }
         const { data, error: signUpError } = await supabase.auth.signUp({
           email,
           password,
@@ -430,7 +437,7 @@ export default function AuthPage() {
                       ? "⏳ Obteniendo ubicación…"
                       : locLat != null
                         ? "✓ Ubicación compartida"
-                        : "📍 Compartir mi ubicación"}
+                        : "📍 Compartir tu ubicación (obligatorio)"}
                   </button>
                   {locLat != null && (
                     <div className="loc-ok">
