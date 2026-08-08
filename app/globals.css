@@ -1271,7 +1271,7 @@ nav.bottom {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  color: #fff;
+  color: #FDFBE0;
 }
 .status-pendiente {
   background: var(--st-pendiente);
@@ -2029,7 +2029,7 @@ nav.bottom {
 .ol-head b {
   font-size: 15px;
 }
-.ol-head span {
+.ol-head > div span {
   display: block;
   font-size: 12px;
   color: var(--ink-soft);

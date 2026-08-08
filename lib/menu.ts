@@ -6,7 +6,6 @@ export const categories: {
   emoji: string;
   image?: string;
 }[] = [
-  { id: "all", label: "Todo", emoji: "🍽️" },
   { id: "cachapas", label: "Cachapas", emoji: "🌽", image: "/cats/cachapa.png" },
   { id: "burgers", label: "Burgers", emoji: "🍔", image: "/cats/burger.png" },
   { id: "perros", label: "Perros", emoji: "🌭", image: "/cats/perros.png" },
