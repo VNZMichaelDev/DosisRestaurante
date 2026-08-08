@@ -5,6 +5,8 @@ import type { Order, OrderStatus } from "@/types";
 import { createClient } from "@/lib/supabase/client";
 import { ORDER_STATUSES, statusShort } from "@/lib/status";
 import OrderCard from "@/components/admin/OrderCard";
+import { BRANCHES } from "@/lib/branches";
+import type { BranchId } from "@/lib/branches";
 
 type Profile = {
   id: string;
@@ -17,10 +19,16 @@ type OrderWithClient = Order & {
 };
 
 type Filter = "todas" | OrderStatus;
+type BranchFilter = "todas" | BranchId;
 
 const FILTERS: { id: Filter; label: string }[] = [
   { id: "todas", label: "Todas" },
   ...ORDER_STATUSES.map((s) => ({ id: s.value as Filter, label: s.short })),
+];
+
+const BRANCH_FILTERS: { id: BranchFilter; label: string }[] = [
+  { id: "todas", label: "Todas las sedes" },
+  ...BRANCHES.map((b) => ({ id: b.id as BranchFilter, label: `${b.emoji} ${b.name}` })),
 ];
 
 // Une los pedidos con su perfil (email/nombre del cliente).
@@ -34,6 +42,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [configError, setConfigError] = useState<string | null>(null);
   const [filter, setFilter] = useState<Filter>("todas");
+  const [branchFilter, setBranchFilter] = useState<BranchFilter>("todas");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -188,13 +197,13 @@ export default function AdminDashboard() {
     return map;
   }, [orders]);
 
-  const visible = useMemo(
-    () =>
-      filter === "todas"
-        ? orders
-        : orders.filter((o) => o.status === filter),
-    [orders, filter]
-  );
+  const visible = useMemo(() => {
+    const byStatus =
+      filter === "todas" ? orders : orders.filter((o) => o.status === filter);
+    return branchFilter === "todas"
+      ? byStatus
+      : byStatus.filter((o) => o.branch === branchFilter);
+  }, [orders, filter, branchFilter]);
 
   return (
     <main className="admin-main">
@@ -214,6 +223,18 @@ export default function AdminDashboard() {
             >
               {f.label}
               <span className="count">{counts.get(f.id) ?? 0}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="filter-tabs branch-tabs">
+          {BRANCH_FILTERS.map((f) => (
+            <button
+              key={f.id}
+              className={`filter-tab ${branchFilter === f.id ? "active" : ""}`}
+              onClick={() => setBranchFilter(f.id)}
+            >
+              {f.label}
             </button>
           ))}
         </div>

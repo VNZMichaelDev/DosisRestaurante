@@ -11,6 +11,8 @@ import { formatBs } from "@/lib/format";
 import { useMounted } from "@/lib/useMounted";
 import { createClient } from "@/lib/supabase/client";
 import type { SavedAddress } from "@/types";
+import { BRANCHES, branchName } from "@/lib/branches";
+import type { BranchId } from "@/lib/branches";
 
 export default function CarritoPage() {
   const router = useRouter();
@@ -24,6 +26,7 @@ export default function CarritoPage() {
   const [deliveryType, setDeliveryType] = useState<"delivery" | "retiro">(
     "delivery"
   );
+  const [branch, setBranch] = useState<BranchId>("monay");
   const [address, setAddress] = useState("");
   const [deliveryRef, setDeliveryRef] = useState("");
   const [saved, setSaved] = useState<SavedAddress[]>([]);
@@ -188,6 +191,7 @@ export default function CarritoPage() {
         payment_phone: phone.replace(/\s/g, ""),
         payment_reference: reference,
         delivery_type: deliveryType,
+        branch: branch,
         delivery_address:
           deliveryType === "delivery" ? effAddress || null : null,
         delivery_reference:
@@ -323,7 +327,32 @@ export default function CarritoPage() {
               </button>
             </div>
 
+            <div className="branch-select">
+              <p className="branch-select-title">
+                🏬 Elige la sede de {deliveryType === "retiro" ? "retiro" : "envío"}
+              </p>
+              <div className="branch-options">
+                {BRANCHES.map((b) => (
+                  <button
+                    type="button"
+                    key={b.id}
+                    className={`branch-option ${branch === b.id ? "active" : ""}`}
+                    onClick={() => setBranch(b.id)}
+                  >
+                    <span className="branch-emoji">{b.emoji}</span>
+                    <span className="branch-name">{b.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="cart-summary">
+              <div className="row">
+                <span>Sede</span>
+                <span>
+                  {branchName(branch)}
+                </span>
+              </div>
               <div className="row">
                 <span>Subtotal</span>
                 <span>{formatBs(total)}</span>

@@ -4,6 +4,7 @@ import AppShell from "@/components/AppShell";
 import { createClient } from "@/lib/supabase/server";
 import { statusLabel } from "@/lib/status";
 import { formatBs, formatDate, shortId } from "@/lib/format";
+import { branchEmoji, branchName } from "@/lib/branches";
 import type { Order } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -70,6 +71,11 @@ export default async function PedidosPage() {
                     {order.items.reduce((n, i) => n + i.qty, 0)} producto
                     {order.items.reduce((n, i) => n + i.qty, 0) === 1 ? "" : "s"}
                   </span>
+                  {order.branch && (
+                    <span className="branch-badge">
+                      {branchEmoji(order.branch)} {branchName(order.branch)}
+                    </span>
+                  )}
                   <b>{formatBs(order.total)}</b>
                 </div>
                 <div className="ol-foot">Seguir pedido →</div>

@@ -5,6 +5,8 @@ export type OrderStatus =
   | "entregado"
   | "cancelado";
 
+export type BranchId = "monay" | "flor_patria";
+
 export type CategoryId =
   | "cachapas"
   | "burgers"
@@ -52,6 +54,7 @@ export interface Order {
   payment_phone: string;
   payment_reference: string;
   delivery_type?: "delivery" | "retiro" | null;
+  branch?: BranchId | null;
   delivery_address?: string | null;
   delivery_reference?: string | null;
   lat?: number | null;

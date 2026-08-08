@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { Order, OrderStatus } from "@/types";
 import { formatBs, formatDate, shortId } from "@/lib/format";
 import { statusLabel } from "@/lib/status";
+import { branchEmoji, branchName } from "@/lib/branches";
 import { createClient } from "@/lib/supabase/client";
 
 const STEPS: { status: OrderStatus; label: string; hint: string; emoji: string }[] = [
@@ -230,6 +231,14 @@ export default function OrderTracker({ orderId }: { orderId: string }) {
                 : "🛵 Entrega a domicilio"}
             </span>
           </div>
+          {order.branch && (
+            <div className="meta-cell">
+              <b>Sede</b>
+              <span>
+                {branchEmoji(order.branch)} {branchName(order.branch)}
+              </span>
+            </div>
+          )}
           {order.delivery_type !== "retiro" && (
             <div className="meta-cell meta-cell-full">
               <b>Dirección</b>

@@ -64,12 +64,15 @@ create table if not exists public.orders (
   payment_reference text not null,              -- últimos 6 dígitos de la referencia
   status            text not null default 'pendiente'
     check (status in ('pendiente', 'en_preparacion', 'en_camino', 'entregado', 'cancelado')),
+  branch            text default 'monay'
+    check (branch in ('monay', 'flor_patria')),
   created_at        timestamptz not null default now(),
   updated_at        timestamptz not null default now()
 );
 
 create index if not exists orders_user_id_idx on public.orders (user_id);
 create index if not exists orders_status_idx on public.orders (status);
+create index if not exists orders_branch_idx on public.orders (branch);
 create index if not exists orders_created_at_idx on public.orders (created_at desc);
 
 -- Trigger: actualiza updated_at en cada UPDATE

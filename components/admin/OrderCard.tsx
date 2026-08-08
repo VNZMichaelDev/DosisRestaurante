@@ -3,6 +3,7 @@
 import type { Order, OrderStatus } from "@/types";
 import { formatBs, formatDate, shortId } from "@/lib/format";
 import { ORDER_STATUSES, statusLabel } from "@/lib/status";
+import { branchEmoji, branchName } from "@/lib/branches";
 
 interface OrderCardProps {
   order: Order & {
@@ -28,7 +29,14 @@ export default function OrderCard({
     <article className="order-card">
       <div className="oc-head">
         <div>
-          <div className="oc-id">#{shortId(order.id)}</div>
+          <div className="oc-id">
+            #{shortId(order.id)}
+            {order.branch && (
+              <span className="branch-badge">
+                {branchEmoji(order.branch)} {branchName(order.branch)}
+              </span>
+            )}
+          </div>
           <div className="oc-time">{formatDate(order.created_at)}</div>
         </div>
         <span className={`status-badge status-${order.status}`}>
