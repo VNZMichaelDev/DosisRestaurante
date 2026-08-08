@@ -961,6 +961,35 @@ nav.bottom {
   font-weight: 700;
   color: var(--ink-soft);
 }
+.pass-wrap {
+  position: relative;
+}
+.pass-wrap .input {
+  padding-right: 48px;
+}
+.pass-toggle {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 6px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.pass-toggle svg {
+  width: 19px;
+  height: 19px;
+}
+.pass-toggle:hover {
+  color: var(--green);
+}
 .input {
   border: 1.5px solid var(--line);
   background: var(--surface);
@@ -2051,13 +2080,56 @@ nav.bottom {
 }
 
 @media (max-width: 720px) {
+  .admin-topbar {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+  .admin-brand {
+    font-size: 14px;
+  }
+  .admin-brand .dot {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+  .admin-topbar .right {
+    margin-left: auto;
+    gap: 6px;
+  }
+  .admin-topbar .link-btn {
+    padding: 7px 9px;
+    font-size: 12px;
+  }
   .admin-tabs {
     order: 3;
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .admin-tab {
+    flex-shrink: 0;
+    padding: 8px 13px;
+    font-size: 12px;
+  }
+  .admin-main {
+    padding: 14px 12px 70px;
+  }
+  .admin-head h1 {
+    font-size: 20px;
+  }
+  .orders-grid {
+    grid-template-columns: 1fr;
+  }
+  .card-form {
+    padding: 16px;
   }
   .am-grid {
     grid-template-columns: 1fr;
+  }
+  .order-card .oc-head {
+    flex-wrap: wrap;
   }
 }
 
