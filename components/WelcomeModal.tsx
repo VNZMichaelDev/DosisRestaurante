@@ -32,8 +32,10 @@ export default function WelcomeModal() {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="welcome-logo">
-          <span>DOSIS</span>
-          <small>Cachapas · Burgers · Parrilla</small>
+          <img
+            src="/banner logo principal.png"
+            alt="Dosis — Cachapas, Burgers & Parrilla"
+          />
         </div>
         <h2>¡Bienvenido a Dosis!</h2>
         <p>
