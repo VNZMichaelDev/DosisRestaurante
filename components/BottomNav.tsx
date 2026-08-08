@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/store/cart";
@@ -115,13 +116,35 @@ export default function BottomNav() {
   const pathname = usePathname();
   const { count } = useCart();
   const mounted = useMounted();
+  const [atMenu, setAtMenu] = useState(false);
+
+  // En la home, "Menú" se activa al llegar a la sección del menú
+  // (y "Inicio" se desactiva); al volver arriba se invierte.
+  useEffect(() => {
+    const onScroll = () => {
+      if (pathname !== "/") return;
+      const menu = document.getElementById("menu");
+      if (!menu) return;
+      const rect = menu.getBoundingClientRect();
+      setAtMenu(rect.top <= window.innerHeight * 0.45);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [pathname]);
 
   return (
     <nav className="bottom">
       {NAV_ITEMS.map((item) => {
         const base = item.href.split("#")[0];
         const active =
-          base === "/" ? pathname === "/" : pathname.startsWith(base);
+          item.key === "home"
+            ? pathname === "/" && !atMenu
+            : item.key === "menu"
+              ? pathname === "/" && atMenu
+              : base === "/"
+                ? pathname === "/"
+                : pathname.startsWith(base);
         return (
           <Link
             key={item.key}
@@ -129,7 +152,7 @@ export default function BottomNav() {
             className={`nav-btn ${active ? "active" : ""} ${
               item.center ? "center" : ""
             }`}
-onClick={(e) => {
+            onClick={(e) => {
               if (item.href === "/#menu") {
                 e.preventDefault();
                 if (pathname === "/") {
@@ -139,6 +162,9 @@ onClick={(e) => {
                 } else {
                   window.location.href = "/#menu";
                 }
+              } else if (item.href === "/" && pathname === "/") {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
               }
             }}
           >
