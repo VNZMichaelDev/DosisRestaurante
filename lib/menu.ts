@@ -6,11 +6,11 @@ export const categories: {
   emoji: string;
   image?: string;
 }[] = [
-  { id: "cachapas", label: "Cachapas", emoji: "🌽", image: "/cats/cachapa.png" },
-  { id: "burgers", label: "Burgers", emoji: "🍔", image: "/cats/burger.png" },
-  { id: "perros", label: "Perros", emoji: "🌭", image: "/cats/perros.png" },
-  { id: "parrilla", label: "Parrilla", emoji: "🥩", image: "/cats/parrilla.png" },
-  { id: "bebidas", label: "Bebidas", emoji: "🥤", image: "/cats/bebidas.png" },
+  { id: "cachapas", label: "Cachapas", emoji: "🌽", image: "/cachapa.png" },
+  { id: "burgers", label: "Burgers", emoji: "🍔", image: "/hamburguesa.jpeg" },
+  { id: "perros", label: "Perros", emoji: "🌭", image: "/perro.png" },
+  { id: "parrilla", label: "Parrilla", emoji: "🥩", image: "/parrilla.png" },
+  { id: "bebidas", label: "Bebidas", emoji: "🥤", image: "/bebidas.png" },
 ];
 
 export const products: MenuItem[] = [
