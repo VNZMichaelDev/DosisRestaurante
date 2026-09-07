@@ -330,7 +330,21 @@ export default function CarritoPage() {
                       −
                     </button>
                     <span>{item.qty}</span>
-                    <button onClick={() => updateQty(item.id, item.qty + 1)}>
+                    <button
+                      onClick={() => updateQty(item.id, item.qty + 1)}
+                      disabled={
+                        typeof item.stock === "number" &&
+                        item.stock > 0 &&
+                        item.qty >= item.stock
+                      }
+                      style={
+                        typeof item.stock === "number" &&
+                        item.stock > 0 &&
+                        item.qty >= item.stock
+                          ? { opacity: 0.4, cursor: "not-allowed" }
+                          : undefined
+                      }
+                    >
                       +
                     </button>
                   </div>

@@ -46,6 +46,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems((prev) => {
       const existing = prev.find((i) => i.id === item.id);
       if (existing) {
+        // Si el stock es null, no hay límite. Si tiene número, respetarlo.
+        if (
+          typeof item.stock === "number" &&
+          existing.qty >= item.stock
+        ) {
+          return prev;
+        }
         return prev.map((i) =>
           i.id === item.id ? { ...i, qty: i.qty + 1 } : i
         );
@@ -62,7 +69,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems((prev) =>
       qty <= 0
         ? prev.filter((i) => i.id !== id)
-        : prev.map((i) => (i.id === id ? { ...i, qty } : i))
+        : prev.map((i) => {
+            if (i.id !== id) return i;
+            // Respetar stock: no permitir cantidad mayor al stock
+            if (typeof i.stock === "number" && qty > i.stock) {
+              return { ...i, qty: i.stock };
+            }
+            return { ...i, qty };
+          })
     );
   }, []);
 

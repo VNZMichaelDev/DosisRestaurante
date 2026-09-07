@@ -15,7 +15,7 @@ const tagClass: Record<string, string> = {
 };
 
 export default function ProductCard({ product }: { product: MenuItem }) {
-  const { addItem } = useCart();
+  const { addItem, items } = useCart();
   const { show } = useToast();
   const [fav, setFav] = useState(false);
   const [added, setAdded] = useState(false);
@@ -25,8 +25,15 @@ export default function ProductCard({ product }: { product: MenuItem }) {
   const isLowStock =
     typeof product.stock === "number" && product.stock > 0 && product.stock <= 3;
 
+  const cartItem = items.find((i) => i.id === product.id);
+  const atMaxStock =
+    typeof product.stock === "number" &&
+    product.stock > 0 &&
+    cartItem != null &&
+    cartItem.qty >= product.stock;
+
   const handleAdd = () => {
-    if (isAgotado) return;
+    if (isAgotado || atMaxStock) return;
     addItem(product);
     setAdded(true);
     setTimeout(() => setAdded(false), 700);
@@ -81,13 +88,13 @@ export default function ProductCard({ product }: { product: MenuItem }) {
         <div className="price-row">
           <span className="price">{formatBs(product.price)}</span>
           <button
-            className={`add-btn ${added ? "added" : ""} ${isAgotado ? "add-btn-disabled" : ""}`}
-            aria-label={isAgotado ? "Agotado" : "Añadir"}
+            className={`add-btn ${added ? "added" : ""} ${isAgotado || atMaxStock ? "add-btn-disabled" : ""}`}
+            aria-label={isAgotado ? "Agotado" : atMaxStock ? "Stock máximo" : "Añadir"}
             onClick={handleAdd}
-            disabled={isAgotado}
+            disabled={isAgotado || atMaxStock}
           >
-            {isAgotado ? (
-              <span style={{ fontSize: 11, fontWeight: 800 }}>X</span>
+            {isAgotado || atMaxStock ? (
+              <span style={{ fontSize: 11, fontWeight: 800 }}>{isAgotado ? "X" : "✓"}</span>
             ) : (
               <svg
                 width="15"
